@@ -5,4 +5,8 @@ import io.reactivex.Single
 
 interface EmployeeApiService {
     fun employeesOnce(): Single<EmployeeResponseWrapper>
+
+    fun malformedEmployeesOnce(): Single<EmployeeResponseWrapper>
+
+    fun emptyEmployeesOnce(): Single<EmployeeResponseWrapper>
 }

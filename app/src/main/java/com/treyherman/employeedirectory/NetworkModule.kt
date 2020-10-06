@@ -1,8 +1,12 @@
 package com.treyherman.employeedirectory
 
+import android.content.Context
+import coil.util.CoilUtils
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.treyherman.employeedirectory.di.qualifier.ImageClient
+import com.treyherman.employeedirectory.di.qualifier.RestClient
 import com.treyherman.employeedirectory.rest.ApiService
 import dagger.Module
 import dagger.Provides
@@ -31,7 +35,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(converterFactory: Converter.Factory, okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        converterFactory: Converter.Factory,
+        @RestClient okHttpClient: OkHttpClient
+    ): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(converterFactory)
             .client(okHttpClient)
@@ -42,11 +49,21 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    @RestClient
+    fun provideNetworkOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @ImageClient
+    fun provideImageLoaderOkHttpClient(context: Context): OkHttpClient {
+        return OkHttpClient.Builder()
+            .cache(CoilUtils.createDefaultCache(context))
             .build()
     }
 

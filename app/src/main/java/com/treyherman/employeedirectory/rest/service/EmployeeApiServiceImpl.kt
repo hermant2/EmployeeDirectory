@@ -13,4 +13,12 @@ class EmployeeApiServiceImpl @Inject constructor(
     override fun employeesOnce(): Single<EmployeeResponseWrapper> {
         return apiService.employeesOnce().subscribeOnIO()
     }
+
+    override fun malformedEmployeesOnce(): Single<EmployeeResponseWrapper> {
+        return apiService.malformedEmployeesOnce().subscribeOnIO()
+    }
+
+    override fun emptyEmployeesOnce(): Single<EmployeeResponseWrapper> {
+        return apiService.emptyEmployeesOnce().subscribeOnIO()
+    }
 }

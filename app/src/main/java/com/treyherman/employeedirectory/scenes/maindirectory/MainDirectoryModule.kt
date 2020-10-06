@@ -1,12 +1,15 @@
 package com.treyherman.employeedirectory.scenes.maindirectory
 
+import android.content.Context
 import android.content.res.Resources
+import coil.ImageLoader
 import com.treyherman.employeedirectory.di.scope.ActivityScope
 import com.treyherman.employeedirectory.rest.service.EmployeeApiService
 import com.treyherman.employeedirectory.rest.service.EmployeeApiServiceImpl
 import com.treyherman.employeedirectory.scenes.maindirectory.list.employee.EmployeeSubcomponent
 import com.treyherman.employeedirectory.scenes.maindirectory.mapper.EmployeeModelMapper
 import com.treyherman.employeedirectory.scenes.maindirectory.mapper.EmployeeModelMapperImpl
+import com.treyherman.employeedirectory.view.image.ImageLoaderProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -16,19 +19,8 @@ class MainDirectoryModule {
 
     @Provides
     @ActivityScope
-    fun providePresenter(
-        view: MainDirectoryMvp.View,
-        resources: Resources,
-        employeeApiService: EmployeeApiService,
-        employeeModelMapper: EmployeeModelMapper
-    ): MainDirectoryMvp.Presenter {
-        return MainDirectoryPresenter(
-            view,
-            resources,
-            employeeApiService,
-            employeeModelMapper,
-            CompositeDisposable()
-        )
+    fun providePresenter(presenter: MainDirectoryPresenter): MainDirectoryMvp.Presenter {
+        return presenter
     }
 
     @Provides
@@ -41,5 +33,14 @@ class MainDirectoryModule {
     @ActivityScope
     fun provideEmployeeModelMapper(modelMapper: EmployeeModelMapperImpl): EmployeeModelMapper {
         return modelMapper
+    }
+
+    @Provides
+    @ActivityScope
+    fun provideImageLoader(
+        imageLoaderProvider: ImageLoaderProvider,
+        context: Context
+    ): ImageLoader {
+        return imageLoaderProvider.provide(context)
     }
 }

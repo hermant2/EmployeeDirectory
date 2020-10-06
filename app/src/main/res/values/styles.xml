@@ -1,13 +1,24 @@
 <resources>
-
     <style name="Widget.EmployeeDirectory.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">6dp</item>
         <item name="cardElevation">4dp</item>
         <item name="cardUseCompatPadding">true</item>
-        <item name="background">@color/color_off_white</item>
+        <item name="background">@color/color_white</item>
     </style>
 
     <style name="Widget.EmployeeDirectory.SelectableCardView" parent="Widget.EmployeeDirectory.CardView">
         <item name="android:foreground">?android:selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.EmployeeDirectory.TextView.Label" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_blue_darkest</item>
+    </style>
+
+    <style name="Widget.EmployeeDirectory.TextView.Paragraph" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_blue_dark</item>
     </style>
 </resources>

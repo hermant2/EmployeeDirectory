@@ -9,7 +9,12 @@ class EmployeePresenter @Inject constructor(
     private val view: EmployeeMvp.View
 ) : EmployeeMvp.Presenter {
     override fun onBind(employee: UIEmployee) {
-        view.displayEmployeeInfo(employee.nameAndTeam, employee.email, employee.classification)
+        view.displayEmployeeInfo(
+            employee.nameAndTeam,
+            employee.email,
+            employee.classification,
+            employee.photoUrl
+        )
 
         employee.phoneNumber?.let {
             view.displayPhoneNumber(it)

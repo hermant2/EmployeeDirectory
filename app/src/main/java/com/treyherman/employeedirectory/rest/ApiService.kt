@@ -7,4 +7,10 @@ import retrofit2.http.GET
 interface ApiService {
     @GET("employees.json")
     fun employeesOnce(): Single<EmployeeResponseWrapper>
+
+    @GET("employees_malformed.json")
+    fun malformedEmployeesOnce(): Single<EmployeeResponseWrapper>
+
+    @GET("employees_empty.json")
+    fun emptyEmployeesOnce(): Single<EmployeeResponseWrapper>
 }

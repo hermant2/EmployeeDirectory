@@ -2,12 +2,15 @@ package com.treyherman.employeedirectory.scenes.maindirectory
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
+import com.jakewharton.rxbinding3.widget.itemSelections
 import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.scenes.maindirectory.list.EmployeeAdapter
 import com.treyherman.employeedirectory.scenes.maindirectory.list.employee.EmployeeSubcomponent
+import com.treyherman.employeedirectory.scenes.maindirectory.model.DataSelectionType
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
 
 import dagger.android.AndroidInjection
@@ -28,8 +31,16 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
     private val disposables = CompositeDisposable()
     private var errorDialog: AlertDialog? = null
 
-    private val adapter by lazy {
+    private val rvAdapter by lazy {
         EmployeeAdapter(this, employeeSubcomponentFactoryProvider.get())
+    }
+
+    private val spinnerAdapter by lazy {
+        ArrayAdapter<DataSelectionType>(
+            this,
+            R.layout.support_simple_spinner_dropdown_item,
+            DataSelectionType.values()
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +59,7 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
     }
 
     override fun displayEmployees(employees: List<UIEmployee>) {
-        adapter.setData(employees)
+        rvAdapter.setData(employees)
     }
 
     override fun displayErrorDialog(title: String, message: String) {
@@ -71,14 +82,25 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
 
     // region private
     private fun setupView() {
-        rvEmployees.adapter = adapter
+        rvEmployees.adapter = rvAdapter
+        vSpinner.adapter = spinnerAdapter
+        subscribeToSpinnerSelectionEvents()
         subscribeToRefreshEvents()
     }
 
     private fun subscribeToRefreshEvents() {
         vRefresh.refreshes().subscribe {
-            presenter.onRefresh()
+            presenter.onRefresh(spinnerDataSelection)
         }.addTo(disposables)
     }
+
+    private fun subscribeToSpinnerSelectionEvents() {
+        vSpinner.itemSelections().subscribe {
+            presenter.onDataTypeSelected(spinnerDataSelection)
+        }.addTo(disposables)
+    }
+
+    private val spinnerDataSelection
+        get() = spinnerAdapter.getItem(vSpinner.selectedItemPosition) ?: DataSelectionType.DEFAULT
     // endregion private
 }

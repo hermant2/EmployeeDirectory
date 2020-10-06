@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spacing_small">
+    android:layout_margin="@dimen/spacing_small">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_small">
 
         <ImageView
             android:id="@+id/ivEmployee"
@@ -22,9 +23,11 @@
 
         <TextView
             android:id="@+id/tvNameAndTeam"
+            style="@style/Widget.EmployeeDirectory.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_tiny"
+            android:layout_marginTop="@dimen/spacing_small"
             android:ellipsize="end"
             android:gravity="start"
             android:lines="1"
@@ -35,6 +38,7 @@
 
         <TextView
             android:id="@+id/tvEmailLabel"
+            style="@style/Widget.EmployeeDirectory.TextView.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_tiny"
@@ -58,6 +62,7 @@
 
         <TextView
             android:id="@+id/tvPhoneNumberLabel"
+            style="@style/Widget.EmployeeDirectory.TextView.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_tiny"
@@ -81,9 +86,12 @@
 
         <TextView
             android:id="@+id/tvEmployeeClassification"
+            style="@style/Widget.EmployeeDirectory.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginTop="@dimen/spacing_tiny"
+            android:layout_marginEnd="@dimen/spacing_small"
             android:gravity="start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +100,10 @@
 
         <TextView
             android:id="@+id/tvBiographyLabel"
+            style="@style/Widget.EmployeeDirectory.TextView.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginTop="@dimen/spacing_tiny"
             android:text="@string/biography_label"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +113,10 @@
             android:id="@+id/tvBiography"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginTop="@dimen/spacing_tiny"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:gravity="start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

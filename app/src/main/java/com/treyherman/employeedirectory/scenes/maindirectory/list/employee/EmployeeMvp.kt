@@ -4,7 +4,12 @@ import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
 
 interface EmployeeMvp {
     interface View {
-        fun displayEmployeeInfo(nameAndTeam: String, email: String, classification: String)
+        fun displayEmployeeInfo(
+            nameAndTeam: String,
+            email: String,
+            classification: String,
+            profileImageUrl: String?
+        )
 
         fun displayPhoneNumber(phoneNumber: String)
 

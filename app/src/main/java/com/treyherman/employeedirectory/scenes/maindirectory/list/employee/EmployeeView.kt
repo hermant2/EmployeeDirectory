@@ -4,9 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.cardview.widget.CardView
+import coil.ImageLoader
+import coil.load
+import coil.util.CoilUtils
+import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
 import dagger.android.AndroidInjector
 import kotlinx.android.synthetic.main.item_employee.view.*
+import okhttp3.OkHttpClient
 import javax.inject.Inject
 
 class EmployeeView @JvmOverloads constructor(
@@ -17,6 +22,9 @@ class EmployeeView @JvmOverloads constructor(
 
     @Inject
     lateinit var presenter: EmployeeMvp.Presenter
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     fun inject(injector: AndroidInjector<EmployeeView>) {
         injector.inject(this)
@@ -29,11 +37,15 @@ class EmployeeView @JvmOverloads constructor(
     override fun displayEmployeeInfo(
         nameAndTeam: String,
         email: String,
-        classification: String
+        classification: String,
+        profileImageUrl: String?
     ) {
         tvNameAndTeam.text = nameAndTeam
         tvEmail.text = email
         tvEmployeeClassification.text = classification
+        ivEmployee.load(profileImageUrl, imageLoader) {
+            placeholder(R.drawable.ic_profile_placeholder)
+        }
     }
 
     override fun displayPhoneNumber(phoneNumber: String) {

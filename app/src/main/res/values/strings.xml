@@ -12,4 +12,9 @@
 
     <string name="oops">Oops!</string>
     <string name="something_went_wrong">Something went wrong.</string>
+    
+    <string name="select_data">Select Data</string>
+    <string name="data_default">Default</string>
+    <string name="data_malformed">Malformed</string>
+    <string name="data_empty">Empty</string>
 </resources>
