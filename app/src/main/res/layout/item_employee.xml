@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.treyherman.employeedirectory.scenes.maindirectory.list.employee.EmployeeView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_small">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivEmployee"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_profile_placeholder"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <TextView
+            android:id="@+id/tvNameAndTeam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivEmployee"
+            app:layout_constraintTop_toTopOf="@id/ivEmployee"
+            tools:text="Trey Herman, Engineering" />
+
+        <TextView
+            android:id="@+id/tvEmailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:text="@string/email_label"
+            app:layout_constraintStart_toEndOf="@id/ivEmployee"
+            app:layout_constraintTop_toBottomOf="@id/tvNameAndTeam" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            app:layout_constraintBottom_toBottomOf="@id/tvEmailLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvEmailLabel"
+            app:layout_constraintTop_toTopOf="@id/tvEmailLabel"
+            tools:text="reallyreallyreallylongemailforsomereason@gmail.com" />
+
+        <TextView
+            android:id="@+id/tvPhoneNumberLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:text="@string/phone_number_label"
+            app:layout_constraintStart_toEndOf="@id/ivEmployee"
+            app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" />
+
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            app:layout_constraintBottom_toBottomOf="@id/tvPhoneNumberLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvPhoneNumberLabel"
+            app:layout_constraintTop_toTopOf="@id/tvPhoneNumberLabel"
+            tools:text="911" />
+
+        <TextView
+            android:id="@+id/tvEmployeeClassification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivEmployee"
+            tools:text="@string/full_time_employee" />
+
+        <TextView
+            android:id="@+id/tvBiographyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:text="@string/biography_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEmployeeClassification" />
+
+        <TextView
+            android:id="@+id/tvBiography"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBiographyLabel"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut pretium lacus. Phasellus vehicula magna diam, ac aliquet orci sagittis euismod." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.treyherman.employeedirectory.scenes.maindirectory.list.employee.EmployeeView>

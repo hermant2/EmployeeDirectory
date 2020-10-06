@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/color_blue</item>
+        <item name="colorPrimaryDark">@color/color_blue_dark</item>
+        <item name="colorSecondary">@color/color_red</item>
+        <item name="colorSurface">@color/color_off_white</item>
+        <item name="colorPrimarySurface">@color/color_off_white</item>
+        <item name="colorOnPrimarySurface">@color/color_blue_dark</item>
+        <item name="colorOnSurface">@color/color_blue_dark</item>
+        <item name="colorOnPrimary">@color/color_off_white</item>
+        <item name="cardViewStyle">@style/Widget.EmployeeDirectory.CardView</item>
+    </style>
+</resources>

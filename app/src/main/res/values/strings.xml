@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Employee Directory</string>
+    <string name="ok">OK</string>
+    <string name="biography_label">Biography:</string>
+    <string name="email_label">Email:</string>
+    <string name="phone_number_label">Phone Number:</string>
+
+    <string name="formatted_name_and_team">%s, %s</string>
+    <string name="full_time_employee">Full time employee</string>
+    <string name="part_time_employee">Part time employee</string>
+    <string name="contractor_employee">Contract employee</string>
+
+    <string name="oops">Oops!</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+</resources>
