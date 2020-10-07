@@ -8,6 +8,10 @@ fun <T> Single<T>.subscribeOnIO(): Single<T> {
     return this.subscribeOn(Schedulers.io())
 }
 
+fun <T> Single<T>.subscribeOnComputation(): Single<T> {
+    return this.subscribeOn(Schedulers.computation())
+}
+
 fun <T> Single<T>.observeOnMain(): Single<T> {
     return this.observeOn(AndroidSchedulers.mainThread())
 }

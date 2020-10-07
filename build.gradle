@@ -36,6 +36,9 @@ allprojects {
         materialComponentsVersion = '1.2.1'
         constraintLayoutVersion = '2.0.0'
         swipeToRefreshLayoutVersion = '1.1.0'
+        mockitoVersion = '2.8.9'
+        mockitoKotlinVersion = '1.5.0'
+        powerMockVersion = '2.0.2'
     }
 }
 

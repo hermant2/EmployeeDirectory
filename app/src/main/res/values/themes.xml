@@ -7,10 +7,13 @@
         <item name="colorSecondary">@color/color_red</item>
         <item name="colorSurface">@color/color_off_white</item>
         <item name="colorPrimarySurface">@color/color_off_white</item>
-        <item name="colorOnPrimarySurface">@color/color_blue_dark</item>
-        <item name="colorOnSurface">@color/color_blue_dark</item>
+        <item name="colorOnPrimarySurface">@color/color_grey</item>
+        <item name="colorOnSurface">@color/color_grey</item>
         <item name="colorOnPrimary">@color/color_off_white</item>
         <item name="android:textViewStyle">@style/Widget.EmployeeDirectory.TextView.Paragraph</item>
         <item name="cardViewStyle">@style/Widget.EmployeeDirectory.CardView</item>
+        <item name="buttonStyle">@style/Widget.EmployeeDirectory.Button</item>
+        <item name="materialButtonStyle">@style/Widget.EmployeeDirectory.Button</item>
+        <item name="android:progressBarStyle">@style/Widget.EmployeeDirectory.ProgressBar</item>
     </style>
 </resources>

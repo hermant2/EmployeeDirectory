@@ -3,9 +3,12 @@ package com.treyherman.employeedirectory.scenes.maindirectory
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
 import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
+import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.itemSelections
 import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.scenes.maindirectory.list.EmployeeAdapter
@@ -29,10 +32,17 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
     lateinit var employeeSubcomponentFactoryProvider: Provider<EmployeeSubcomponent.Factory>
 
     private val disposables = CompositeDisposable()
-    private var errorDialog: AlertDialog? = null
 
     private val rvAdapter by lazy {
         EmployeeAdapter(this, employeeSubcomponentFactoryProvider.get())
+    }
+
+    private val tvEmptyContentMessage by lazy {
+        vEmptyContent.findViewById<TextView>(R.id.tvMessage)
+    }
+
+    private val btTryAgain by lazy {
+        vEmptyContent.findViewById<Button>(R.id.btTryAgain)
     }
 
     private val spinnerAdapter by lazy {
@@ -42,6 +52,9 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
             DataSelectionType.values()
         )
     }
+
+    private val spinnerDataSelection
+        get() = spinnerAdapter.getItem(vSpinner.selectedItemPosition) ?: DataSelectionType.DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -53,22 +66,28 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
 
     override fun onDestroy() {
         disposables.dispose()
-        errorDialog?.dismiss()
         presenter.onDestroy()
         super.onDestroy()
     }
 
     override fun displayEmployees(employees: List<UIEmployee>) {
+        vEmptyContent.visibility = View.GONE
+        rvEmployees.visibility = View.VISIBLE
         rvAdapter.setData(employees)
     }
 
-    override fun displayErrorDialog(title: String, message: String) {
-        errorDialog?.dismiss()
-        errorDialog = AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setNeutralButton(R.string.ok, null)
-            .show()
+    override fun updateEmployees(employees: List<UIEmployee>, diffResult: DiffUtil.DiffResult) {
+        vEmptyContent.visibility = View.GONE
+        rvEmployees.visibility = View.VISIBLE
+        rvAdapter.setDataQuietly(employees)
+        diffResult.dispatchUpdatesTo(rvAdapter)
+    }
+
+    override fun displayEmptyContent(message: String) {
+        rvEmployees.visibility = View.GONE
+        vEmptyContent.visibility = View.VISIBLE
+        tvEmptyContentMessage.text = message
+        rvAdapter.setData(emptyList())
     }
 
     override fun displayLoading() {
@@ -84,23 +103,27 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
     private fun setupView() {
         rvEmployees.adapter = rvAdapter
         vSpinner.adapter = spinnerAdapter
+        subscribeToTryAgainClickEvents()
         subscribeToSpinnerSelectionEvents()
         subscribeToRefreshEvents()
     }
 
+    private fun subscribeToTryAgainClickEvents() {
+        btTryAgain.clicks().subscribe {
+            presenter.onTryAgainClicked(spinnerDataSelection, rvAdapter.data)
+        }.addTo(disposables)
+    }
+
     private fun subscribeToRefreshEvents() {
         vRefresh.refreshes().subscribe {
-            presenter.onRefresh(spinnerDataSelection)
+            presenter.onRefresh(spinnerDataSelection, rvAdapter.data)
         }.addTo(disposables)
     }
 
     private fun subscribeToSpinnerSelectionEvents() {
         vSpinner.itemSelections().subscribe {
-            presenter.onDataTypeSelected(spinnerDataSelection)
+            presenter.onDataTypeSelected(spinnerDataSelection, rvAdapter.data)
         }.addTo(disposables)
     }
-
-    private val spinnerDataSelection
-        get() = spinnerAdapter.getItem(vSpinner.selectedItemPosition) ?: DataSelectionType.DEFAULT
     // endregion private
 }

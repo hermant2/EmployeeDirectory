@@ -3,5 +3,5 @@ package com.treyherman.employeedirectory.di.qualifier
 import javax.inject.Qualifier
 
 @Qualifier
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class ImageClient

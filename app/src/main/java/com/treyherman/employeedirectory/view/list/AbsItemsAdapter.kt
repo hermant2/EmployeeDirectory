@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class AbsItemsAdapter<T, VH : AbsViewHolder<out T>>(context: Context) :
     RecyclerView.Adapter<VH>() {
 
-    protected val inflater = LayoutInflater.from(context)
-    protected val data = mutableListOf<T>()
+    val data = mutableListOf<T>()
+    private val inflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewId: Int): VH {
         val view = inflater.inflate(viewId, parent, false)

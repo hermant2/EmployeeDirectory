@@ -1,14 +1,18 @@
 package com.treyherman.employeedirectory.scenes.maindirectory.mapper
 
 import android.content.res.Resources
+import android.telephony.PhoneNumberUtils
 import com.treyherman.employeedirectory.R
+import com.treyherman.employeedirectory.manager.phonenumber.PhoneNumberFormatManager
 import com.treyherman.employeedirectory.rest.model.response.employee.EmployeeResponse
 import com.treyherman.employeedirectory.rest.model.response.employee.EmployeeResponseWrapper
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
+import java.util.*
 import javax.inject.Inject
 
 class EmployeeModelMapperImpl @Inject constructor(
-    private val resources: Resources
+    private val resources: Resources,
+    private val phoneNumberFormatManager: PhoneNumberFormatManager
 ) : EmployeeModelMapper {
     override fun mapEmployees(responseWrapper: EmployeeResponseWrapper): List<UIEmployee> {
         return responseWrapper.employees.map { mapEmployee(it) }
@@ -21,7 +25,7 @@ class EmployeeModelMapperImpl @Inject constructor(
         return UIEmployee(
             response.uuid,
             nameAndTeam,
-            response.phoneNumber,
+            phoneNumberFormatManager.formatPhoneNumber(response.phoneNumber),
             response.emailAddress,
             response.biography,
             response.photoUrlSmall,

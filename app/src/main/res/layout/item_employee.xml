@@ -15,11 +15,11 @@
             android:id="@+id/ivEmployee"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/ic_profile_placeholder"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintWidth_percent="0.2"
+            tools:src="@drawable/ic_profile_placeholder" />
 
         <TextView
             android:id="@+id/tvNameAndTeam"
@@ -84,6 +84,13 @@
             app:layout_constraintTop_toTopOf="@id/tvPhoneNumberLabel"
             tools:text="911" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/vBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tvPhoneNumberLabel,tvPhoneNumber,ivEmployee" />
+
         <TextView
             android:id="@+id/tvEmployeeClassification"
             style="@style/Widget.EmployeeDirectory.TextView.Label"
@@ -95,7 +102,7 @@
             android:gravity="start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivEmployee"
+            app:layout_constraintTop_toBottomOf="@id/vBarrier"
             tools:text="@string/full_time_employee" />
 
         <TextView

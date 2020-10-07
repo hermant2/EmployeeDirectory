@@ -3,10 +3,8 @@ package com.treyherman.employeedirectory
 import android.content.Context
 import coil.util.CoilUtils
 import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.treyherman.employeedirectory.di.qualifier.ImageClient
-import com.treyherman.employeedirectory.di.qualifier.RestClient
 import com.treyherman.employeedirectory.rest.ApiService
 import dagger.Module
 import dagger.Provides
@@ -37,7 +35,7 @@ class NetworkModule {
     @Singleton
     fun provideRetrofit(
         converterFactory: Converter.Factory,
-        @RestClient okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(converterFactory)
@@ -49,7 +47,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @RestClient
     fun provideNetworkOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)

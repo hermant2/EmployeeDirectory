@@ -6,4 +6,6 @@
     <color name="color_blue_dark">#34528A</color>
     <color name="color_blue_darkest">#17316C</color>
     <color name="color_red">#8B575C</color>
+    <color name="color_grey">#30332E</color>
+    <color name="color_dark_grey">#30332E</color>
 </resources>

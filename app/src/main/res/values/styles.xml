@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Widget.EmployeeDirectory.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">6dp</item>
         <item name="cardElevation">4dp</item>
@@ -13,12 +14,24 @@
     <style name="Widget.EmployeeDirectory.TextView.Label" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/color_blue_darkest</item>
+        <item name="android:textColor">@color/color_dark_grey</item>
     </style>
 
     <style name="Widget.EmployeeDirectory.TextView.Paragraph" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/color_blue_dark</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
+    <style name="Widget.EmployeeDirectory.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/color_red</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="Widget.EmployeeDirectory.ProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+        <item name="android:indeterminateTint">@color/color_blue_dark</item>
     </style>
 </resources>
