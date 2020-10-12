@@ -13,13 +13,13 @@ abstract class AbsItemsAdapter<T, VH : AbsViewHolder<out T>>(context: Context) :
     val data = mutableListOf<T>()
     private val inflater = LayoutInflater.from(context)
 
-    override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewId: Int): VH {
-        val view = inflater.inflate(viewId, parent, false)
-        return createViewHolderFromView(view = view, viewId = viewId)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val view = inflater.inflate(itemLayoutResource(viewType), parent, false)
+        return createViewHolderFromView(view, viewType)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return itemLayoutResource(position = position)
+        return itemViewType(position)
     }
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
@@ -43,10 +43,12 @@ abstract class AbsItemsAdapter<T, VH : AbsViewHolder<out T>>(context: Context) :
         data.addAll(list)
     }
 
-    abstract fun createViewHolderFromView(view: View, @LayoutRes viewId: Int): VH
+    abstract fun createViewHolderFromView(view: View, viewType: Int): VH
 
     @LayoutRes
-    abstract fun itemLayoutResource(position: Int): Int
+    abstract fun itemLayoutResource(viewType: Int): Int
+
+    abstract fun itemViewType(position: Int): Int
 
     abstract fun onBind(viewHolder: VH, data: T, position: Int)
 }

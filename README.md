@@ -6,7 +6,9 @@
 - Architecture and data flow
 
 3. Copied-in code/dependencies
-- I reused the extension functions & Dagger module structure from past project
+- Reused the extension functions from past projects
+- Reused Dagger module structure from past projects
+- Reused AbsItemsAdapter + AbsViewHolder from past projects
 
 4. Tablet/phone focus
 - Phone
