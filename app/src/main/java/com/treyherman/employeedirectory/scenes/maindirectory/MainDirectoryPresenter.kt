@@ -6,14 +6,20 @@ import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.di.scope.ActivityScope
 import com.treyherman.employeedirectory.extension.observeOnMain
 import com.treyherman.employeedirectory.extension.subscribeOnComputation
+import com.treyherman.employeedirectory.persistence.dao.EmployeeDao
+import com.treyherman.employeedirectory.rest.model.response.employee.EmployeeResponseWrapper
 import com.treyherman.employeedirectory.rest.service.EmployeeApiService
 import com.treyherman.employeedirectory.scenes.maindirectory.diff.EmployeeDiffCallback
 import com.treyherman.employeedirectory.scenes.maindirectory.mapper.EmployeeModelMapper
 import com.treyherman.employeedirectory.scenes.maindirectory.model.DataSelectionType
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.rxkotlin.addTo
 
 import javax.inject.Inject
 
@@ -22,25 +28,41 @@ class MainDirectoryPresenter @Inject constructor(
     private val view: MainDirectoryMvp.View,
     private val resources: Resources,
     private val employeeApiService: EmployeeApiService,
-    private val employeeModelMapper: EmployeeModelMapper
+    private val employeeModelMapper: EmployeeModelMapper,
+    private val employeeDao: EmployeeDao
 ) : MainDirectoryMvp.Presenter {
+
+    private val disposables = CompositeDisposable()
 
     private var employeesDisposable: Disposable? = null
 
     override fun onCreate() {
         view.displayLoading()
-        employeesDisposable?.dispose()
-        employeesDisposable = defaultEmployeesOnce
-            .observeOnMain()
-            .subscribeWith(employeeObserver)
+        employeeDao.localEmployeesStream()
+            .doOnNext {
+                if (it.isEmpty()) {
+                    currentEmployeeOnce(DataSelectionType.DEFAULT).subscribe({}, {})
+                        .addTo(disposables)
+                }
+            }
+            .map { employeeModelMapper.mapUIEmployees(it) }
+            .subscribeWith(object : DisposableObserver<List<UIEmployee>>() {
+                override fun onComplete() {}
+
+                override fun onNext(employees: List<UIEmployee>) {
+                    view.hideLoading()
+                    view.displayEmployees(employees)
+                }
+
+                override fun onError(e: Throwable) {
+                    view.hideLoading()
+                    view.displayEmptyContent(resources.getString(R.string.something_went_wrong))
+                }
+            }).addTo(disposables)
     }
 
     override fun onRefresh(dataSelection: DataSelectionType, currentEmployees: List<UIEmployee>) {
-        when (dataSelection) {
-            DataSelectionType.DEFAULT -> subscribeToRefreshedDefaultEmployees(currentEmployees)
-            DataSelectionType.MALFORMED -> subscribeToRefreshedMalformedEmployees(currentEmployees)
-            DataSelectionType.EMPTY -> subscribeToRefreshedEmptyEmployees(currentEmployees)
-        }
+        currentEmployeeOnce(dataSelection).subscribe({}, {}).addTo(disposables)
     }
 
     override fun onDestroy() {
@@ -52,11 +74,7 @@ class MainDirectoryPresenter @Inject constructor(
         currentEmployees: List<UIEmployee>
     ) {
         view.displayLoading()
-        when (dataSelection) {
-            DataSelectionType.DEFAULT -> subscribeToRefreshedDefaultEmployees(currentEmployees)
-            DataSelectionType.MALFORMED -> subscribeToRefreshedMalformedEmployees(currentEmployees)
-            DataSelectionType.EMPTY -> subscribeToRefreshedEmptyEmployees(currentEmployees)
-        }
+        currentEmployeeOnce(dataSelection).subscribe({}, {}).addTo(disposables)
     }
 
     override fun onDataTypeSelected(
@@ -64,37 +82,40 @@ class MainDirectoryPresenter @Inject constructor(
         currentEmployees: List<UIEmployee>
     ) {
         view.displayLoading()
-        when (dataSelection) {
-            DataSelectionType.DEFAULT -> subscribeToRefreshedDefaultEmployees(currentEmployees)
-            DataSelectionType.MALFORMED -> subscribeToRefreshedMalformedEmployees(currentEmployees)
-            DataSelectionType.EMPTY -> subscribeToRefreshedEmptyEmployees(currentEmployees)
-        }
+        currentEmployeeOnce(dataSelection).subscribe({}, {}).addTo(disposables)
     }
 
     // region private
-    private fun subscribeToRefreshedDefaultEmployees(currentEmployees: List<UIEmployee>) {
-        employeesDisposable?.dispose()
-        employeesDisposable = defaultEmployeesOnce
-            .flatMap { calculateEmployeeDiffOnce(currentEmployees, it) }
-            .observeOnMain()
-            .subscribeWith(employeesDiffResultObserver)
-    }
-
-    private fun subscribeToRefreshedMalformedEmployees(currentEmployees: List<UIEmployee>) {
-        employeesDisposable?.dispose()
-        employeesDisposable = malformedEmployeesOnce
-            .flatMap { calculateEmployeeDiffOnce(currentEmployees, it) }
-            .observeOnMain()
-            .subscribeWith(employeesDiffResultObserver)
-    }
-
-    private fun subscribeToRefreshedEmptyEmployees(currentEmployees: List<UIEmployee>) {
-        employeesDisposable?.dispose()
-        employeesDisposable = emptyEmployeesOnce
-            .flatMap { calculateEmployeeDiffOnce(currentEmployees, it) }
-            .observeOnMain()
-            .subscribeWith(employeesDiffResultObserver)
-    }
+//    private fun subscribeToRefreshedDefaultEmployees(currentEmployees: List<UIEmployee>) {
+//        employeesDisposable?.dispose()
+//        employeesDisposable = defaultEmployeesOnce
+//            .flatMap { calculateEmployeeDiffOnce(currentEmployees, it) }
+//            .observeOnMain()
+//            .subscribeWith(employeesDiffResultObserver)
+//    }
+//
+//    private fun subscribeToRefreshedMalformedEmployees(currentEmployees: List<UIEmployee>) {
+//        employeesDisposable?.dispose()
+//        employeesDisposable =
+//            malformedEmployeesOnce.subscribeWith(object : DisposableCompletableObserver() {
+//                override fun onComplete() {
+//                    view.hideLoading()
+//                }
+//
+//                override fun onError(e: Throwable) {
+//                    view.hideLoading()
+//                    view.displayEmptyContent()
+//                }
+//            })
+//    }
+//
+//    private fun subscribeToRefreshedEmptyEmployees(currentEmployees: List<UIEmployee>) {
+//        employeesDisposable?.dispose()
+//        employeesDisposable = emptyEmployeesOnce
+//            .flatMap { calculateEmployeeDiffOnce(currentEmployees, it) }
+//            .observeOnMain()
+//            .subscribeWith(employeesDiffResultObserver)
+//    }
 
     private fun calculateEmployeeDiffOnce(
         oldEmployees: List<UIEmployee>,
@@ -109,48 +130,65 @@ class MainDirectoryPresenter @Inject constructor(
         }.subscribeOnComputation()
     }
 
-    private val defaultEmployeesOnce
-        get() = employeeApiService.employeesOnce()
-            .map { employeeModelMapper.mapEmployees(it) }
-
-    private val malformedEmployeesOnce
-        get() = employeeApiService.malformedEmployeesOnce()
-            .map { employeeModelMapper.mapEmployees(it) }
-
-    private val emptyEmployeesOnce
-        get() = employeeApiService.emptyEmployeesOnce()
-            .map { employeeModelMapper.mapEmployees(it) }
-
-    private val employeeObserver
-        get() = object : DisposableSingleObserver<List<UIEmployee>>() {
-            override fun onSuccess(employees: List<UIEmployee>) {
-                view.hideLoading()
-                when (employees.isNotEmpty()) {
-                    true -> view.displayEmployees(employees)
-                    false -> view.displayEmptyContent(resources.getString(R.string.no_employees_found))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.hideLoading()
-                view.displayEmptyContent(resources.getString(R.string.something_went_wrong))
-            }
+    private fun currentEmployeeOnce(selectionType: DataSelectionType): Single<EmployeeResponseWrapper> {
+        return when (selectionType) {
+            DataSelectionType.DEFAULT -> employeeApiService.employeesOnce()
+            DataSelectionType.MALFORMED -> employeeApiService.malformedEmployeesOnce()
+            DataSelectionType.EMPTY -> employeeApiService.emptyEmployeesOnce()
         }
+    }
 
-    private val employeesDiffResultObserver
-        get() = object : DisposableSingleObserver<Pair<List<UIEmployee>, DiffUtil.DiffResult>>() {
-            override fun onSuccess(employeeDiffPair: Pair<List<UIEmployee>, DiffUtil.DiffResult>) {
-                view.hideLoading()
-                when (employeeDiffPair.first.isNotEmpty()) {
-                    true -> view.updateEmployees(employeeDiffPair.first, employeeDiffPair.second)
-                    false -> view.displayEmptyContent(resources.getString(R.string.no_employees_found))
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.hideLoading()
-                view.displayEmptyContent(resources.getString(R.string.something_went_wrong))
-            }
-        }
+//    private val defaultEmployeesOnce
+//        get() = employeeApiService.employeesOnce()
+//            .flatMapCompletable {
+//                val entities = employeeModelMapper.mapEmployeeEntities(it)
+//                employeeDao.insertEmployeesCompletable(entities)
+//            }
+//
+//    private val malformedEmployeesOnce
+//        get() = employeeApiService.malformedEmployeesOnce()
+//            .flatMapCompletable {
+//                val entities = employeeModelMapper.mapEmployeeEntities(it)
+//                employeeDao.insertEmployeesCompletable(entities)
+//            }
+//
+//    private val emptyEmployeesOnce
+//        get() = employeeApiService.emptyEmployeesOnce()
+//            .flatMapCompletable {
+//                val entities = employeeModelMapper.mapEmployeeEntities(it)
+//                employeeDao.insertEmployeesCompletable(entities)
+//            }
+//
+//    private val employeeObserver
+//        get() = object : DisposableSingleObserver<List<UIEmployee>>() {
+//            override fun onSuccess(employees: List<UIEmployee>) {
+//                view.hideLoading()
+//                when (employees.isNotEmpty()) {
+//                    true -> view.displayEmployees(employees)
+//                    false -> view.displayEmptyContent(resources.getString(R.string.no_employees_found))
+//                }
+//            }
+//
+//            override fun onError(e: Throwable) {
+//                view.hideLoading()
+//                view.displayEmptyContent(resources.getString(R.string.something_went_wrong))
+//            }
+//        }
+//
+//    private val employeesDiffResultObserver
+//        get() = object : DisposableSingleObserver<Pair<List<UIEmployee>, DiffUtil.DiffResult>>() {
+//            override fun onSuccess(employeeDiffPair: Pair<List<UIEmployee>, DiffUtil.DiffResult>) {
+//                view.hideLoading()
+//                when (employeeDiffPair.first.isNotEmpty()) {
+//                    true -> view.updateEmployees(employeeDiffPair.first, employeeDiffPair.second)
+//                    false -> view.displayEmptyContent(resources.getString(R.string.no_employees_found))
+//                }
+//            }
+//
+//            override fun onError(e: Throwable) {
+//                view.hideLoading()
+//                view.displayEmptyContent(resources.getString(R.string.something_went_wrong))
+//            }
+//        }
     // endregion private
 }

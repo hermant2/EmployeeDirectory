@@ -39,6 +39,7 @@ allprojects {
         mockitoVersion = '2.8.9'
         mockitoKotlinVersion = '1.5.0'
         powerMockVersion = '2.0.2'
+        roomVersion = '2.2.5'
     }
 }
 

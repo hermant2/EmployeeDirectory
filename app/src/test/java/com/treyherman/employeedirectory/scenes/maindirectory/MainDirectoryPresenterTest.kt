@@ -46,10 +46,10 @@ class MainDirectoryPresenterTest {
         val mockResponseWrapper = EmployeeResponseWrapper(listOf(mockEmployeeResponse()))
         whenever(employeeApiService.employeesOnce()).thenReturn(Single.just(mockResponseWrapper))
         val mockUIEmployees = listOf(mockUIEmployee())
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
         presenter.onCreate()
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).employeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()
@@ -62,10 +62,10 @@ class MainDirectoryPresenterTest {
     fun onCreate_defaultEmployeesOnceWithEmptyEmployeesSuccess_displayEmptyContent() {
         val mockResponseWrapper = EmployeeResponseWrapper(emptyList())
         whenever(employeeApiService.employeesOnce()).thenReturn(Single.just(mockResponseWrapper))
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(emptyList())
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(emptyList())
         presenter.onCreate()
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).employeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()
@@ -103,10 +103,10 @@ class MainDirectoryPresenterTest {
         val mockResponseWrapper = EmployeeResponseWrapper(listOf(mockEmployeeResponse()))
         whenever(employeeApiService.employeesOnce()).thenReturn(Single.just(mockResponseWrapper))
         val mockUIEmployees = listOf(mockUIEmployee())
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
         presenter.onRefresh(DataSelectionType.DEFAULT, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).employeesOnce()
         verify(view).hideLoading()
         verify(view).updateEmployees(eq(mockUIEmployees), any())
@@ -131,10 +131,10 @@ class MainDirectoryPresenterTest {
     fun onRefresh_emptyEmployeesOnceWithSuccess_displayEmptyContent() {
         val mockResponseWrapper = EmployeeResponseWrapper(emptyList())
         whenever(employeeApiService.emptyEmployeesOnce()).thenReturn(Single.just(mockResponseWrapper))
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(emptyList())
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(emptyList())
         presenter.onRefresh(DataSelectionType.EMPTY, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).emptyEmployeesOnce()
         verify(view).hideLoading()
         verify(view).displayEmptyContent(NO_EMPLOYEES_FOUND)
@@ -148,10 +148,10 @@ class MainDirectoryPresenterTest {
         val mockResponseWrapper = EmployeeResponseWrapper(listOf(mockEmployeeResponse()))
         whenever(employeeApiService.employeesOnce()).thenReturn(Single.just(mockResponseWrapper))
         val mockUIEmployees = listOf(mockUIEmployee())
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
         presenter.onTryAgainClicked(DataSelectionType.DEFAULT, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).employeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()
@@ -178,10 +178,10 @@ class MainDirectoryPresenterTest {
     fun onTryAgainClicked_emptyEmployeesOnceWithSuccess_displayEmptyContent() {
         val mockResponseWrapper = EmployeeResponseWrapper(emptyList())
         whenever(employeeApiService.emptyEmployeesOnce()).thenReturn(Single.just(mockResponseWrapper))
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(emptyList())
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(emptyList())
         presenter.onTryAgainClicked(DataSelectionType.EMPTY, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).emptyEmployeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()
@@ -196,10 +196,10 @@ class MainDirectoryPresenterTest {
         val mockResponseWrapper = EmployeeResponseWrapper(listOf(mockEmployeeResponse()))
         whenever(employeeApiService.employeesOnce()).thenReturn(Single.just(mockResponseWrapper))
         val mockUIEmployees = listOf(mockUIEmployee())
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(mockUIEmployees)
         presenter.onDataTypeSelected(DataSelectionType.DEFAULT, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).employeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()
@@ -226,10 +226,10 @@ class MainDirectoryPresenterTest {
     fun onDataTypeSelected_emptyEmployeesOnceWithSuccess_displayEmptyContent() {
         val mockResponseWrapper = EmployeeResponseWrapper(emptyList())
         whenever(employeeApiService.emptyEmployeesOnce()).thenReturn(Single.just(mockResponseWrapper))
-        whenever(employeeModelMapper.mapEmployees(mockResponseWrapper)).thenReturn(emptyList())
+        whenever(employeeModelMapper.mapUIEmployees(mockResponseWrapper)).thenReturn(emptyList())
         presenter.onDataTypeSelected(DataSelectionType.EMPTY, emptyList())
 
-        verify(employeeModelMapper).mapEmployees(mockResponseWrapper)
+        verify(employeeModelMapper).mapUIEmployees(mockResponseWrapper)
         verify(employeeApiService).emptyEmployeesOnce()
         verify(view).displayLoading()
         verify(view).hideLoading()

@@ -80,6 +80,15 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okio:okio:2.8.0"
 
+    // room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+//    implementation "androidx.room:room-runtime:$roomVersion"
+//    kapt "androidx.room:room-compiler:$roomVersion"
+//    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+
     // material components
     implementation "com.google.android.material:material:$materialComponentsVersion"
 

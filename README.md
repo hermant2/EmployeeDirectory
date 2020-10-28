@@ -8,7 +8,8 @@
 3. Copied-in code/dependencies
 - Reused the extension functions from past projects
 - Reused Dagger module structure from past projects
-- Reused AbsItemsAdapter + AbsViewHolder from past projects
+- Reused AbsItemsAdapter + AbsViewHolder
+ from past projects
 
 4. Tablet/phone focus
 - Phone
