@@ -1,35 +1,50 @@
 package com.treyherman.employeedirectory.scenes.maindirectory.mapper
 
 import android.content.res.Resources
-import android.telephony.PhoneNumberUtils
 import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.manager.phonenumber.PhoneNumberFormatManager
+import com.treyherman.employeedirectory.persistence.model.EmployeeEntity
 import com.treyherman.employeedirectory.rest.model.response.employee.EmployeeResponse
 import com.treyherman.employeedirectory.rest.model.response.employee.EmployeeResponseWrapper
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
-import java.util.*
 import javax.inject.Inject
 
 class EmployeeModelMapperImpl @Inject constructor(
     private val resources: Resources,
     private val phoneNumberFormatManager: PhoneNumberFormatManager
 ) : EmployeeModelMapper {
-    override fun mapEmployees(responseWrapper: EmployeeResponseWrapper): List<UIEmployee> {
-        return responseWrapper.employees.map { mapEmployee(it) }
+    override fun mapEmployeeEntities(responseWrapper: EmployeeResponseWrapper): List<EmployeeEntity> {
+        return responseWrapper.employees.map {
+            EmployeeEntity(
+                it.uuid,
+                it.fullName,
+                it.phoneNumber,
+                it.emailAddress,
+                it.biography,
+                it.photoUrlSmall,
+                it.photoUrlLarge,
+                it.team,
+                it.employeeType
+            )
+        }
+    }
+
+    override fun mapUIEmployees(employeeEntities: List<EmployeeEntity>): List<UIEmployee> {
+        return employeeEntities.map { mapEmployee(it) }
     }
 
     // region private
-    private fun mapEmployee(response: EmployeeResponse): UIEmployee {
+    private fun mapEmployee(entity: EmployeeEntity): UIEmployee {
         val nameAndTeam =
-            resources.getString(R.string.formatted_name_and_team, response.fullName, response.team)
+            resources.getString(R.string.formatted_name_and_team, entity.fullName, entity.team)
         return UIEmployee(
-            response.uuid,
+            entity.uuid,
             nameAndTeam,
-            phoneNumberFormatManager.formatPhoneNumber(response.phoneNumber),
-            response.emailAddress,
-            response.biography,
-            response.photoUrlSmall,
-            mapEmployeeClassificationText(response.type)
+            phoneNumberFormatManager.formatPhoneNumber(entity.phoneNumber),
+            entity.emailAddress,
+            entity.biography,
+            entity.photoUrlSmall,
+            mapEmployeeClassificationText(EmployeeResponse.Type.valueOf(entity.employeeType))
         )
     }
 

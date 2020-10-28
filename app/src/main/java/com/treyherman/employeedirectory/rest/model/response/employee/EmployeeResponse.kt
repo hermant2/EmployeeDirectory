@@ -9,7 +9,7 @@ data class EmployeeResponse(
     val photoUrlSmall: String?,
     val photoUrlLarge: String?,
     val team: String,
-    private val employeeType: String
+    val employeeType: String
 ) {
     val type
         get() = Type.enumValueFromString(employeeType)

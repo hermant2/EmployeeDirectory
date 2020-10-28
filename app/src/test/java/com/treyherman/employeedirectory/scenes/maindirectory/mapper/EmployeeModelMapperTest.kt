@@ -80,7 +80,7 @@ class EmployeeModelMapperTest {
 
     @Test
     fun mapEmployees_result() {
-        val employees = employeeModelMapper.mapEmployees(employeesResponseWrapper)
+        val employees = employeeModelMapper.mapUIEmployees(employeesResponseWrapper)
 
         assertEquals(employees.size, employeesResponseWrapper.employees.size)
         employees.forEachIndexed { index, employee ->
