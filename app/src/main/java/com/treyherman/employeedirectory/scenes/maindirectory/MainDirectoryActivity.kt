@@ -11,6 +11,7 @@ import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.itemSelections
 import com.treyherman.employeedirectory.R
+import com.treyherman.employeedirectory.scenes.employeedetail.EmployeeDetailActivity
 import com.treyherman.employeedirectory.scenes.maindirectory.list.EmployeeAdapter
 import com.treyherman.employeedirectory.scenes.maindirectory.list.employee.EmployeeSubcomponent
 import com.treyherman.employeedirectory.scenes.maindirectory.model.DataSelectionType
@@ -97,6 +98,10 @@ class MainDirectoryActivity : AppCompatActivity(), MainDirectoryMvp.View {
     override fun hideLoading() {
         vProgress.visibility = View.GONE
         vRefresh.isRefreshing = false
+    }
+
+    override fun openEmployeeDetails(employee: UIEmployee) {
+        startActivity(EmployeeDetailActivity.createIntent(this, employee))
     }
 
     // region private

@@ -92,7 +92,7 @@ class EmployeeModelMapperTest {
         assertEquals(uiEmployee.uuid, response.uuid)
         assertEquals(uiEmployee.nameAndTeam, FORMATTED_NAME_AND_TEAM)
         assertEquals(uiEmployee.bio, response.biography)
-        assertEquals(uiEmployee.photoUrl, response.photoUrlSmall)
+        assertEquals(uiEmployee.photoUrlSmall, response.photoUrlSmall)
         response.phoneNumber?.let {
             assertEquals(uiEmployee.phoneNumber, MOCK_FORMATTED_NUMBER)
         } ?: assertNull(uiEmployee.phoneNumber)
