@@ -17,4 +17,7 @@
     <string name="data_default">Default</string>
     <string name="data_malformed">Malformed</string>
     <string name="data_empty">Empty</string>
+
+    <string name="call">Call</string>
+    <string name="email">Email</string>
 </resources>

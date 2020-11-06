@@ -7,11 +7,14 @@ import androidx.cardview.widget.CardView
 import coil.ImageLoader
 import coil.load
 import coil.util.CoilUtils
+import com.jakewharton.rxbinding3.view.clicks
 import com.treyherman.employeedirectory.R
 import com.treyherman.employeedirectory.scenes.maindirectory.model.UIEmployee
 import dagger.android.AndroidInjector
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.item_employee.view.*
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class EmployeeView @JvmOverloads constructor(
@@ -26,12 +29,24 @@ class EmployeeView @JvmOverloads constructor(
     @Inject
     lateinit var imageLoader: ImageLoader
 
+    private var clickDisposable: Disposable? = null
+
     fun inject(injector: AndroidInjector<EmployeeView>) {
         injector.inject(this)
     }
 
     fun bind(employee: UIEmployee) {
         presenter.onBind(employee)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        subscribeToClickEvents()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        clickDisposable?.dispose()
     }
 
     override fun displayEmployeeInfo(
@@ -70,5 +85,12 @@ class EmployeeView @JvmOverloads constructor(
         tvBiographyLabel.visibility = GONE
     }
 
-
+    // region private
+    private fun subscribeToClickEvents() {
+        clickDisposable?.dispose()
+        clickDisposable = clicks()
+            .debounce(300L, TimeUnit.MILLISECONDS)
+            .subscribe { presenter.onEmployeeClicked() }
+    }
+    // endregion private
 }

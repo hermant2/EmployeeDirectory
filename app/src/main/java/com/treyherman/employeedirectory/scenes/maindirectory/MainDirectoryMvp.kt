@@ -15,6 +15,8 @@ interface MainDirectoryMvp {
         fun hideLoading()
 
         fun displayEmptyContent(message: String)
+
+        fun openEmployeeDetails(employee: UIEmployee)
     }
 
     interface Presenter {
@@ -27,5 +29,7 @@ interface MainDirectoryMvp {
         fun onTryAgainClicked(dataSelection: DataSelectionType, currentEmployees: List<UIEmployee>)
 
         fun onDataTypeSelected(dataSelection: DataSelectionType, currentEmployees: List<UIEmployee>)
+
+        fun presentEmployeeDetails(employee: UIEmployee)
     }
 }

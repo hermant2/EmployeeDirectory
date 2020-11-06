@@ -35,7 +35,7 @@ class EmployeePresenterTest {
             mockEmployeeWithOptionals.nameAndTeam,
             mockEmployeeWithOptionals.email,
             mockEmployeeWithOptionals.classification,
-            mockEmployeeWithOptionals.photoUrl
+            mockEmployeeWithOptionals.photoUrlSmall
         )
 
         verify(view).displayPhoneNumber(MOCK_PHONE)

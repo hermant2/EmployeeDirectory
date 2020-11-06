@@ -29,6 +29,7 @@ class EmployeeModelMapperImpl @Inject constructor(
             response.emailAddress,
             response.biography,
             response.photoUrlSmall,
+            response.photoUrlLarge,
             mapEmployeeClassificationText(response.type)
         )
     }

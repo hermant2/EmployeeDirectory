@@ -71,6 +71,10 @@ class MainDirectoryPresenter @Inject constructor(
         }
     }
 
+    override fun presentEmployeeDetails(employee: UIEmployee) {
+        view.openEmployeeDetails(employee)
+    }
+
     // region private
     private fun subscribeToRefreshedDefaultEmployees(currentEmployees: List<UIEmployee>) {
         employeesDisposable?.dispose()

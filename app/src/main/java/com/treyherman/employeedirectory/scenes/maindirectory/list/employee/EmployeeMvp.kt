@@ -22,5 +22,7 @@ interface EmployeeMvp {
 
     interface Presenter {
         fun onBind(employee: UIEmployee)
+
+        fun onEmployeeClicked()
     }
 }

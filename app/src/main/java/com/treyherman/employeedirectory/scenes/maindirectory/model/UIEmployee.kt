@@ -1,39 +1,55 @@
 package com.treyherman.employeedirectory.scenes.maindirectory.model
 
+import android.os.Parcel
+import android.os.Parcelable
+
 data class UIEmployee(
     val uuid: String,
     val nameAndTeam: String,
     val phoneNumber: String?,
     val email: String,
     val bio: String?,
-    val photoUrl: String?,
+    val photoUrlSmall: String?,
+    val photoUrlLarge: String?,
     val classification: String
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString(),
+        parcel.readString() ?: "",
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString() ?: ""
+    )
 
-        other as UIEmployee
-
-        if (uuid != other.uuid) return false
-        if (nameAndTeam != other.nameAndTeam) return false
-        if (phoneNumber != other.phoneNumber) return false
-        if (email != other.email) return false
-        if (bio != other.bio) return false
-        if (photoUrl != other.photoUrl) return false
-        if (classification != other.classification) return false
-
-        return true
+    fun isValid(): Boolean {
+        return uuid.isNotEmpty() && nameAndTeam.isNotEmpty() && email.isNotEmpty() && classification.isNotEmpty()
     }
 
-    override fun hashCode(): Int {
-        var result = uuid.hashCode()
-        result = 31 * result + nameAndTeam.hashCode()
-        result = 31 * result + (phoneNumber?.hashCode() ?: 0)
-        result = 31 * result + email.hashCode()
-        result = 31 * result + (bio?.hashCode() ?: 0)
-        result = 31 * result + (photoUrl?.hashCode() ?: 0)
-        result = 31 * result + classification.hashCode()
-        return result
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(uuid)
+        parcel.writeString(nameAndTeam)
+        parcel.writeString(phoneNumber)
+        parcel.writeString(email)
+        parcel.writeString(bio)
+        parcel.writeString(photoUrlSmall)
+        parcel.writeString(photoUrlLarge)
+        parcel.writeString(classification)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<UIEmployee> {
+        override fun createFromParcel(parcel: Parcel): UIEmployee {
+            return UIEmployee(parcel)
+        }
+
+        override fun newArray(size: Int): Array<UIEmployee?> {
+            return arrayOfNulls(size)
+        }
     }
 }
